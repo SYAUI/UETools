@@ -16,8 +16,8 @@ namespace DBUtility
         public SQLiteHelper()
         {
         }
-        
-      
+
+
 
         //数据库连接
         private static SQLiteConnection _DBc = null;
@@ -91,14 +91,28 @@ namespace DBUtility
         }
 
 
+        /// <summary>
+        /// 执行ExecuteNonQuery方法
+        /// </summary>
+        public static int ExecuteNonQuery(string commandText, params object[] paramList)
+        {
+
+            SQLiteCommand cmd = DBc.CreateCommand();
+            cmd.CommandText = commandText;
+            if (paramList != null)
+            {
+                foreach (SQLiteParameter parm in paramList)
+                    cmd.Parameters.Add(parm);
+            }
+            if (DBc.State == ConnectionState.Closed)
+                DBc.Open();
+            int result = cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            DBc.Close();
+
+            return result;
+        }
 
 
-
-
-
-
-
-
-
-    }
+    } 
 }

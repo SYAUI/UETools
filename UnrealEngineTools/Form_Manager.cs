@@ -1,4 +1,6 @@
+using System.Data;
 using System.Data.SQLite;
+using System.Reflection;
 
 
 namespace UnrealEngineTools
@@ -24,10 +26,11 @@ namespace UnrealEngineTools
 
         private void t_name_Leave(object sender, EventArgs e)
         {
-            if(DBUtility.SQLiteHelper.IsDataExists("blueprintnode", "name", t_name.Text))
+            if(DBUtility.SQLiteHelper.IsDataExists("blueprintnode", "name", t_name.Text) || (t_name.Text == ""))
             {
-                label_add.Text = "命名已存在";
-                err_name.SetError(t_name, "请使用唯一命名");
+                label_add.Text = "命名不可用";
+                err_name.SetError(t_name, "请使用唯一命名，不可为空");
+                BPNNameValid = false;
             }
             else
             {
@@ -35,6 +38,7 @@ namespace UnrealEngineTools
                     label_add.Text = "写入准备就绪";
                 else
                     label_add.Text = "命名可用";
+                BPNNameValid = true;
                 err_name.Clear();
             }
         }
@@ -81,7 +85,16 @@ namespace UnrealEngineTools
         {
             if (BPNDataValid && BPNNameValid)
             {
-                
+                SQLiteParameter[] parameters = {
+                    new SQLiteParameter("@name", DbType.String,32),
+                    new SQLiteParameter("@src", DbType.String),
+                    new SQLiteParameter("@desc", DbType.String),
+                    new SQLiteParameter("@image", DbType.Binary)};
+                parameters[0].Value = t_name.Text;
+                parameters[1].Value = BPNClipboardData;
+                parameters[2].Value = t_desc.Text;
+                parameters[3].Value = BPNBitMap;
+                DBUtility.SQLiteHelper.ExecuteNonQuery("insert into blueprintnode VALUES (@name,@src,@desc,@image)", parameters);
 
             }
             else { MessageBox.Show("数据输入有误！请检查！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }

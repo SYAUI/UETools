@@ -28,7 +28,7 @@
             b_Query = new Button();
             b_add = new Button();
             t_name = new TextBox();
-            textBox2 = new TextBox();
+            t_desc = new TextBox();
             groupBox1 = new GroupBox();
             label_add = new Label();
             b_inputIMG = new Button();
@@ -81,14 +81,14 @@
             t_name.TabIndex = 3;
             t_name.Leave += t_name_Leave;
             // 
-            // textBox2
+            // t_desc
             // 
-            textBox2.Location = new Point(242, 22);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.PlaceholderText = "输入功能描述";
-            textBox2.Size = new Size(301, 52);
-            textBox2.TabIndex = 4;
+            t_desc.Location = new Point(242, 22);
+            t_desc.Multiline = true;
+            t_desc.Name = "t_desc";
+            t_desc.PlaceholderText = "输入功能描述";
+            t_desc.Size = new Size(301, 52);
+            t_desc.TabIndex = 4;
             // 
             // groupBox1
             // 
@@ -97,7 +97,7 @@
             groupBox1.Controls.Add(b_inputIMG);
             groupBox1.Controls.Add(b_iputbpn);
             groupBox1.Controls.Add(t_name);
-            groupBox1.Controls.Add(textBox2);
+            groupBox1.Controls.Add(t_desc);
             groupBox1.Location = new Point(174, 312);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(549, 88);
@@ -169,7 +169,7 @@
         private Button b_Query;
         private Button b_add;
         private TextBox t_name;
-        private TextBox textBox2;
+        private TextBox t_desc;
         private GroupBox groupBox1;
         private Button b_iputbpn;
         private ErrorProvider err_BPNdata;
