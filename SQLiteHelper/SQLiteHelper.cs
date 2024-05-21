@@ -121,7 +121,7 @@ namespace DBUtility
         /// </summary>
         public static DataSet Query(string strSql)
         {
-            
+
             DataSet ds = new DataSet();
             if (DBc.State == ConnectionState.Closed)
                 DBc.Open();
@@ -130,17 +130,17 @@ namespace DBUtility
             da.Dispose();
             DBc.Close();
             return ds;
-            
+
         }
 
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public static DataSet GetList(string s_table,string s_field, string s_where)
+        public static DataSet GetList(string s_table, string s_field, string s_where)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select " + s_field + " ");
-            strSql.Append(" FROM "+ s_table + " ");
+            strSql.Append(" FROM " + s_table + " ");
             if (s_where.Trim() != "")
             {
                 strSql.Append(" where " + s_where);
@@ -149,5 +149,27 @@ namespace DBUtility
         }
 
 
-    } 
+        /// <summary>
+        /// 创建表
+        /// </summary>
+        public static bool CreateNewTable(string tableName,string parameter)
+        {
+
+            
+            if (DBc.State != System.Data.ConnectionState.Open)
+            {
+                DBc.Open();
+                SQLiteCommand cmd = DBc.CreateCommand();
+                cmd.Connection = DBc;
+                cmd.CommandText = "CREATE TABLE " + tableName + "(" + parameter + ")";
+                cmd.ExecuteNonQuery();
+            }
+            DBc.Close();
+
+            return true;
+        }
+
+
+
+    }
 }

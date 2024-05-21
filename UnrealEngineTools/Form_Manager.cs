@@ -6,7 +6,6 @@ using System.Reflection;
 namespace UnrealEngineTools
 {
 
-
     public partial class Form_Manager : Form
     {
         public Form_Manager()
