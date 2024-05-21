@@ -6,6 +6,7 @@ using System.Collections;
 using System.Data.SQLite;
 using System.Configuration;
 using System.Data.Common;
+using System.Text;
 
 
 namespace DBUtility
@@ -86,6 +87,7 @@ namespace DBUtility
             {
                 result = true;
             }
+            cmd.Dispose();
             DBc.Clone();
             return result;
         }
@@ -111,6 +113,39 @@ namespace DBUtility
             DBc.Close();
 
             return result;
+        }
+
+
+        /// <summary>
+        /// 执行查询语句，返回DataSet
+        /// </summary>
+        public static DataSet Query(string strSql)
+        {
+            
+            DataSet ds = new DataSet();
+            if (DBc.State == ConnectionState.Closed)
+                DBc.Open();
+            SQLiteDataAdapter da = new SQLiteDataAdapter(strSql, DBc);
+            da.Fill(ds, "ds");
+            da.Dispose();
+            DBc.Close();
+            return ds;
+            
+        }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public static DataSet GetList(string s_table,string s_field, string s_where)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select " + s_field + " ");
+            strSql.Append(" FROM "+ s_table + " ");
+            if (s_where.Trim() != "")
+            {
+                strSql.Append(" where " + s_where);
+            }
+            return Query(strSql.ToString());
         }
 
 

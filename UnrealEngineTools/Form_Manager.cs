@@ -5,6 +5,8 @@ using System.Reflection;
 
 namespace UnrealEngineTools
 {
+
+
     public partial class Form_Manager : Form
     {
         public Form_Manager()
@@ -16,17 +18,20 @@ namespace UnrealEngineTools
         private bool BPNDataValid = false;
         private bool BPNNameValid = false;
 
+
+
         private void b_Query_Click(object sender, EventArgs e)
         {
-
-
+            DataSet ds = DBUtility.SQLiteHelper.GetList("blueprintnode", "name,desc,image", "");
+            dataGridView1.DataSource = ds.Tables[0];
+            b_copynode.Enabled = true;
         }
 
 
 
         private void t_name_Leave(object sender, EventArgs e)
         {
-            if(DBUtility.SQLiteHelper.IsDataExists("blueprintnode", "name", t_name.Text) || (t_name.Text == ""))
+            if (DBUtility.SQLiteHelper.IsDataExists("blueprintnode", "name", t_name.Text) || (t_name.Text == ""))
             {
                 label_add.Text = "命名不可用";
                 err_name.SetError(t_name, "请使用唯一命名，不可为空");
@@ -100,6 +105,64 @@ namespace UnrealEngineTools
             else { MessageBox.Show("数据输入有误！请检查！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
-        
+        private void b_copynode_Click(object sender, EventArgs e)
+        {
+            string? localname = "'" + dataGridView1.CurrentRow.Cells[0].Value.ToString() + "'";
+            DataSet ds = DBUtility.SQLiteHelper.GetList("blueprintnode", "src", "name = " + localname);
+            localname = ds.Tables[0].Rows[0][0].ToString();
+            ds.Dispose();
+            Clipboard.SetDataObject(localname);
+            MessageBox.Show("节点已复制到剪贴板，请到引擎中粘贴。", "Succeed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+
+    public partial class BPNInfo
+    {
+        public BPNInfo()
+        { }
+        #region Structure
+        private string _Name = string.Empty;
+        private string _BPNClipboardData = string.Empty;
+        private string _Desc = string.Empty;
+        private Bitmap? _BPNBitMap;
+
+        /// <summary>
+        /// 名字
+        /// </summary>
+        public string Name
+        {
+            set { _Name = value; }
+            get { return _Name; }
+        }
+
+        /// <summary>
+        /// 剪贴板蓝图节点数据
+        /// </summary>
+        public string BPNClipboardData
+        {
+            set { _BPNClipboardData = value; }
+            get { return _BPNClipboardData; }
+        }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Desc
+        {
+            set { _Desc = value; }
+            get { return _Desc; }
+        }
+
+        /// <summary>
+        /// 截图数据
+        /// </summary>
+        public Bitmap? BPNBitMap
+        {
+            set { _BPNBitMap = value; }
+            get { return _BPNBitMap; }
+        }
+
+        #endregion Structure
+
     }
 }

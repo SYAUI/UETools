@@ -35,6 +35,7 @@
             b_iputbpn = new Button();
             err_BPNdata = new ErrorProvider(components);
             err_name = new ErrorProvider(components);
+            b_copynode = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)err_BPNdata).BeginInit();
@@ -142,11 +143,23 @@
             // 
             err_name.ContainerControl = this;
             // 
+            // b_copynode
+            // 
+            b_copynode.Enabled = false;
+            b_copynode.Location = new Point(12, 360);
+            b_copynode.Name = "b_copynode";
+            b_copynode.Size = new Size(75, 23);
+            b_copynode.TabIndex = 6;
+            b_copynode.Text = "复制选中节点";
+            b_copynode.UseVisualStyleBackColor = true;
+            b_copynode.Click += b_copynode_Click;
+            // 
             // Form_Manager
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(732, 411);
+            Controls.Add(b_copynode);
             Controls.Add(groupBox1);
             Controls.Add(b_add);
             Controls.Add(b_Query);
@@ -176,5 +189,6 @@
         private Button b_inputIMG;
         private Label label_add;
         private ErrorProvider err_name;
+        private Button b_copynode;
     }
 }
